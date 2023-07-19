@@ -1,13 +1,20 @@
 from flask import Flask
-from flask_mysqldb import MySQL
+import mysql.connector
+from mysql.connector import errorcode
  
 app = Flask(__name__)
- 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'piskodb'
- 
-mysql = MySQL(app)
 
-cursor = mysql.connection.cursor()
+try:
+  cnx = mysql.connector.connect(user='root',
+                              host='localhost',
+                              database='piskodb')
+
+except mysql.connector.Error as err:
+  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+    print("Something is wrong with your user name or password")
+  elif err.errno == errorcode.ER_BAD_DB_ERROR:
+    print("Database does not exist")
+  else:
+    print(err)
+
+db = cnx.cursor(buffered=True)
