@@ -14,6 +14,7 @@ CREATE TABLE users (
 CREATE TABLE invite_codes (
   invite_id INT NOT NULL AUTO_INCREMENT,
   code VARCHAR(45) NOT NULL,
+  used BOOLEAN DEFAULT true,
   PRIMARY KEY(invite_id)
 );
 
